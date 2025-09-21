@@ -1,8 +1,8 @@
 name: Death Recap
-author: Kouzukii
-punchline: Quickly figure out what killed you or your party members!
+author: Kouzukii Nag0mi
+punchline: 快速确认什么玩意弄死了你和你的小伙伴!
 description: |-
-  Quickly figure out what killed you or your party members!
+  快速确认什么玩意弄死了你和你的小伙伴!
 
   Shows:
   - Healing
@@ -11,7 +11,7 @@ description: |-
   - Buffs
   - Barriers
   - Addle, Feint, Reprisal on damage source
-repo_url: https://github.com/Kouzukii/ffxiv-deathrecap
+repo_url: https://github.com/eroubue/ffxiv-deathrecap
 tags:
   - death
   - recap

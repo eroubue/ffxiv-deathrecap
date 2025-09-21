@@ -13,7 +13,7 @@ namespace DeathRecap.UI;
 public class ConfigWindow : Window {
     private readonly DeathRecapPlugin plugin;
 
-    public ConfigWindow(DeathRecapPlugin plugin) : base("Death Recap Config", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize) {
+    public ConfigWindow(DeathRecapPlugin plugin) : base("死亡回顾配置", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize) {
         this.plugin = plugin;
 
         Size = new Vector2(580, 340);
@@ -22,26 +22,26 @@ public class ConfigWindow : Window {
     public override void Draw() {
         var conf = plugin.Configuration;
 
-        ImGui.TextUnformatted("Capture Settings");
+        ImGui.TextUnformatted("捕获设置");
         ImGui.Separator();
         ImGui.Columns(3);
         foreach (var (k, v) in conf.EnumCaptureConfigs()) {
             ImGui.PushID(k);
             var bCapture = v.Capture;
-            if (ImGui.Checkbox($"Capture {k}", ref bCapture)) {
+            if (ImGui.Checkbox($"捕获 {k}", ref bCapture)) {
                 v.Capture = bCapture;
                 conf.Save();
             }
 
             var notificationStyle = (int)v.NotificationStyle;
-            ImGui.TextUnformatted("On Death");
-            if (ImGui.Combo("##2", ref notificationStyle, ["Do Nothing", "Chat Message", "Show Popup", "Open Recap"])) {
+            ImGui.TextUnformatted("死亡时");
+            if (ImGui.Combo("##2", ref notificationStyle, ["不做任何操作", "聊天消息", "显示弹窗", "打开回顾"])) {
                 v.NotificationStyle = (NotificationStyle)notificationStyle;
                 conf.Save();
             }
 
             var bOnlyInstances = v.OnlyInstances;
-            if (ImGui.Checkbox("Only in instances", ref bOnlyInstances)) {
+            if (ImGui.Checkbox("仅在副本中", ref bOnlyInstances)) {
                 v.OnlyInstances = bOnlyInstances;
                 conf.Save();
             }
@@ -49,7 +49,7 @@ public class ConfigWindow : Window {
             OnlyInInstancesTooltip();
 
             var bDisableInPvp = v.DisableInPvp;
-            if (ImGui.Checkbox("Disable in PvP", ref bDisableInPvp)) {
+            if (ImGui.Checkbox("在PvP中禁用", ref bDisableInPvp)) {
                 v.DisableInPvp = bDisableInPvp;
                 conf.Save();
             }
@@ -61,12 +61,12 @@ public class ConfigWindow : Window {
         ImGui.Columns();
         ImGui.Separator();
         ImGui.Spacing();
-        ImGui.TextUnformatted("General Settings");
+        ImGui.TextUnformatted("通用设置");
         ImGui.Spacing();
         var chatTypes = Enum.GetValues<XivChatType>();
         var chatType = Array.IndexOf(chatTypes, conf.ChatType);
         ImGui.AlignTextToFramePadding();
-        ImGui.TextUnformatted("Chat Message Type");
+        ImGui.TextUnformatted("聊天消息类型");
         ImGui.SameLine();
         ImGui.SetNextItemWidth(150 * ImGuiHelpers.GlobalScale);
         if (ImGui.Combo("##3", ref chatType, chatTypes.Select(t => t.GetAttribute<XivChatTypeInfoAttribute>()?.FancyName ?? t.ToString()).ToImmutableList(),
@@ -78,7 +78,7 @@ public class ConfigWindow : Window {
         ChatMessageTypeTooltip();
 
         var bShowTip = conf.ShowTip;
-        if (ImGui.Checkbox("Show chat tip", ref bShowTip)) {
+        if (ImGui.Checkbox("显示聊天提示", ref bShowTip)) {
             conf.ShowTip = bShowTip;
             conf.Save();
         }
@@ -86,7 +86,7 @@ public class ConfigWindow : Window {
         ChatTipTooltip();
         var keepEventsFor = conf.KeepCombatEventsForSeconds;
         ImGui.AlignTextToFramePadding();
-        ImGui.TextUnformatted("Keep Events for (sec)");
+        ImGui.TextUnformatted("保留事件时间(秒)");
         ImGui.SameLine(ImGuiHelpers.GlobalScale * 140);
         ImGui.SetNextItemWidth(ImGuiHelpers.GlobalScale * 150);
         if (ImGui.InputInt("##4", ref keepEventsFor, 10)) {
@@ -96,7 +96,7 @@ public class ConfigWindow : Window {
 
         var keepDeathsFor = conf.KeepDeathsForMinutes;
         ImGui.AlignTextToFramePadding();
-        ImGui.TextUnformatted("Keep Deaths for (min)");
+        ImGui.TextUnformatted("保留死亡记录时间(分)");
         ImGui.SameLine(ImGuiHelpers.GlobalScale * 140);
         ImGui.SetNextItemWidth(ImGuiHelpers.GlobalScale * 150);
         if (ImGui.InputInt("##5", ref keepDeathsFor, 10)) {
@@ -107,21 +107,21 @@ public class ConfigWindow : Window {
 
     private static void ChatMessageTypeTooltip() {
         if (ImGui.IsItemHovered()) {
-            ImGui.SetTooltip("Filter category of the \"Chat Message\" death notification.\n" +
-                             "\"Debug\" will show up in all chat tabs regardless of configuration.\n" +
-                             "Note that this will only affect the way the notification is displayed to you. They will never be visible to others.");
+            ImGui.SetTooltip("设置“聊天消息”死亡通知的类别。\n" +
+                             "“调试”消息会在所有聊天窗口中显示，无论如何配置。\n" +
+                             "注意：这只会影响向你显示通知的方式，其他人永远不会看到。");
         }
     }
 
     private static void ChatTipTooltip() {
         if (ImGui.IsItemHovered()) {
-            ImGui.SetTooltip("Prints the command in the chat to reopen the window the first time you close the Death Recap.");
+            ImGui.SetTooltip("在你第一次关闭死亡回顾窗口时，在聊天中打印重新打开窗口的命令。");
         }
     }
 
     private static void OnlyInInstancesTooltip() {
         if (ImGui.IsItemHovered()) {
-            ImGui.SetTooltip("Will only show a death notification when in an instance (e.g. a Dungeon)");
+            ImGui.SetTooltip("仅在副本中（例如地下城）显示死亡通知");
         }
     }
 }

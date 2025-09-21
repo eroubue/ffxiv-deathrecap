@@ -43,9 +43,9 @@ public class Configuration : IPluginConfiguration {
     }
 
     public IEnumerable<(string, CaptureConfig)> EnumCaptureConfigs() {
-        yield return ("Self", Self);
-        yield return ("Party", Party);
-        yield return ("Others", Others);
+        yield return ("自己", Self);
+        yield return ("小队", Party);
+        yield return ("其他", Others);
     }
 
     public void Migrate() {
